@@ -32,8 +32,20 @@ export const FileUpload = ({
   const fileInputRef = useRef(null);
 
   const handleFileChange = (newFiles) => {
-    setFiles(newFiles);
-    onChange && onChange(newFiles);
+
+    if (newFiles.length > 0) {
+
+      const file = newFiles[0];
+
+      if (!file.type.startsWith("video/") && !file.type.startsWith("audio/")) {
+        alert("Only video and audio files are allowed!");
+        return;
+      }
+      
+      setFiles([file]);
+      onChange && onChange([file]);
+      
+    }
   };
 
   const handleClick = () => {
@@ -59,6 +71,7 @@ export const FileUpload = ({
           ref={fileInputRef}
           id="file-upload-handle"
           type="file"
+          accept="video/*,audio/*"
           onChange={(e) => handleFileChange(e.target.files)}
           className="hidden" />
         <div
@@ -89,7 +102,7 @@ export const FileUpload = ({
                       animate={{ opacity: 1 }}
                       layout
                       className="text-base text-neutral-700 dark:text-neutral-300 truncate max-w-xs">
-                      {files[0].name}
+                      {files ? files[0].name : "No file uploaded yet"}
                     </motion.p>
                     <motion.p
                       initial={{ opacity: 0 }}
