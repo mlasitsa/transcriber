@@ -32,8 +32,15 @@ export const FileUpload = ({
   const fileInputRef = useRef(null);
 
   const handleFileChange = (newFiles) => {
-    setFiles(newFiles);
-    onChange && onChange(newFiles);
+
+    if (newFiles.length > 0) {
+
+      setFiles([newFiles[0]]);
+      onChange && onChange([newFiles[0]]);
+    }
+    
+    
+    
   };
 
   const handleClick = () => {
@@ -89,7 +96,7 @@ export const FileUpload = ({
                       animate={{ opacity: 1 }}
                       layout
                       className="text-base text-neutral-700 dark:text-neutral-300 truncate max-w-xs">
-                      {files[0].name}
+                      {files ? files[0].name : "No file uploaded yet"}
                     </motion.p>
                     <motion.p
                       initial={{ opacity: 0 }}
