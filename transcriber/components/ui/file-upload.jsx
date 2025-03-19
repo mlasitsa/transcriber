@@ -35,12 +35,17 @@ export const FileUpload = ({
 
     if (newFiles.length > 0) {
 
-      setFiles([newFiles[0]]);
-      onChange && onChange([newFiles[0]]);
+      const file = newFiles[0];
+
+      if (!file.type.startsWith("video/") && !file.type.startsWith("audio/")) {
+        alert("Only video and audio files are allowed!");
+        return;
+      }
+      
+      setFiles([file]);
+      onChange && onChange([file]);
+      
     }
-    
-    
-    
   };
 
   const handleClick = () => {
@@ -66,6 +71,7 @@ export const FileUpload = ({
           ref={fileInputRef}
           id="file-upload-handle"
           type="file"
+          accept="video/*,audio/*"
           onChange={(e) => handleFileChange(e.target.files)}
           className="hidden" />
         <div

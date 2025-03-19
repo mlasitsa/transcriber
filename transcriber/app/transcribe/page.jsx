@@ -14,7 +14,7 @@ const Transcribe = () => {
   useEffect(() => {
     console.log(uploadedFiles)
   },[uploadedFiles])
-  
+
   return (
     <div className="p-10">
       <h2 className="text-lg font-semibold mb-4">File Upload Component</h2>
@@ -24,7 +24,7 @@ const Transcribe = () => {
       <div className="mt-4">
         <h3 className="text-md font-medium">Uploaded Files:</h3>
         <ul>
-          {uploadedFiles.length == 1 ? (
+          {uploadedFiles.length >= 1 ? (
               <li key={uploadedFiles.length}>
                 <span>{uploadedFiles[0].name}</span> - <span>{(uploadedFiles[0].size / (1024 * 1024)).toFixed(2)} MB</span>
               </li>
