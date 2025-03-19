@@ -32,7 +32,7 @@ export const FileUpload = ({
   const fileInputRef = useRef(null);
 
   const handleFileChange = (newFiles) => {
-    setFiles((prevFiles) => [...prevFiles, ...newFiles]);
+    setFiles(newFiles);
     onChange && onChange(newFiles);
   };
 
@@ -43,7 +43,7 @@ export const FileUpload = ({
   const { getRootProps, isDragActive } = useDropzone({
     multiple: false,
     noClick: true,
-    onDrop: handleFileChange,
+    onDrop: (acceptedFiles) => handleFileChange(acceptedFiles),
     onDropRejected: (error) => {
       console.log(error);
     },
@@ -59,7 +59,7 @@ export const FileUpload = ({
           ref={fileInputRef}
           id="file-upload-handle"
           type="file"
-          onChange={(e) => handleFileChange(Array.from(e.target.files || []))}
+          onChange={(e) => handleFileChange(e.target.files)}
           className="hidden" />
         <div
           className="absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,white,transparent)]">
@@ -75,11 +75,10 @@ export const FileUpload = ({
             Drag or drop your files here or click to upload
           </p>
           <div className="relative w-full mt-10 max-w-xl mx-auto">
-            {files.length > 0 &&
-              files.map((file, idx) => (
+            {files.length == 1 &&
                 <motion.div
-                  key={"file" + idx}
-                  layoutId={idx === 0 ? "file-upload" : "file-upload-" + idx}
+                  key={"file" + files.length}
+                  layoutId={files.length === 0 ? "file-upload" : "file-upload-" + files.length}
                   className={cn(
                     "relative overflow-hidden z-40 bg-white dark:bg-neutral-900 flex flex-col items-start justify-start md:h-24 p-4 mt-4 w-full mx-auto rounded-md",
                     "shadow-sm"
@@ -90,14 +89,14 @@ export const FileUpload = ({
                       animate={{ opacity: 1 }}
                       layout
                       className="text-base text-neutral-700 dark:text-neutral-300 truncate max-w-xs">
-                      {file.name}
+                      {files[0].name}
                     </motion.p>
                     <motion.p
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       layout
                       className="rounded-lg px-2 py-1 w-fit flex-shrink-0 text-sm text-neutral-600 dark:bg-neutral-800 dark:text-white shadow-input">
-                      {(file.size / (1024 * 1024)).toFixed(2)} MB
+                      {(files[0].size / (1024 * 1024)).toFixed(2)} MB
                     </motion.p>
                   </div>
 
@@ -108,16 +107,16 @@ export const FileUpload = ({
                       animate={{ opacity: 1 }}
                       layout
                       className="px-1 py-0.5 rounded-md bg-gray-100 dark:bg-neutral-800 ">
-                      {file.type}
+                      {files[0].type}
                     </motion.p>
 
                     <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} layout>
                       modified{" "}
-                      {new Date(file.lastModified).toLocaleDateString()}
+                      {new Date(files[0].lastModified).toLocaleDateString()}
                     </motion.p>
                   </div>
                 </motion.div>
-              ))}
+              }
             {!files.length && (
               <motion.div
                 layoutId="file-upload"

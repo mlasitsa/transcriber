@@ -1,8 +1,9 @@
-"use client";;
+"use client";
 import { motion } from "framer-motion";
 import { Circle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import RainbowButton from "./rainbow-button";
+import Link from "next/link";
 
 
 function ElegantShape({
@@ -163,8 +164,14 @@ function HeroGeometric({
                             innovative design and cutting-edge technology.
                         </p>
                     </motion.div>
-
-                    <RainbowButton> Try it out </RainbowButton>
+                    
+                    <Link href="/transcribe">
+                    <RainbowButton> 
+                        
+                        Try it out 
+                        
+                    </RainbowButton>
+                    </Link>
                 </div>
                 
             </div>
