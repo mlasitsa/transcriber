@@ -3,6 +3,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { FileUpload } from "@/components/ui/file-upload"; 
+import axios from "axios";
 
 const Transcribe = () => {
     const [uploadedFiles, setUploadedFiles] = useState([]); 
@@ -14,6 +15,26 @@ const Transcribe = () => {
   useEffect(() => {
     console.log(uploadedFiles)
   },[uploadedFiles])
+
+  
+  const sendVideo = async () => {
+    try {
+        const formData = new FormData();
+        formData.append("file", uploadedFiles[0]); 
+
+        const response = await axios.post("/api/process-video", formData, {  
+            headers: {
+                "Content-Type": "multipart/form-data", 
+            },
+        });
+
+        console.log(response.data); 
+    } catch (error) {
+        console.error("Error uploading video:", error);
+    }
+};
+
+
 
   return (
     <div className="p-10">
@@ -34,6 +55,7 @@ const Transcribe = () => {
           )}
         </ul>
       </div>
+      <button onClick={sendVideo}>PROCESS</button>
     </div>
   ) 
 }
